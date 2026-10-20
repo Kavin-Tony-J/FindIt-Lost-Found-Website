@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FindIt | Lost & Found</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #F5F1E8;
+            color: #28352E;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 8%;
+            background: #24483B;
+            box-shadow: 0 2px 12px #19372D12;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #FFFFFF;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #FFFFFF;
+            margin-left: 24px;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            color: #DCE6DA;
+        }
+
+        .hero {
+            width: 84%;
+            margin: 32px auto;
+            padding: 48px;
+            border-radius: 20px;
+            background: #DCE6DA;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 14px;
+            color: #24483B;
+        }
+
+        .hero p {
+            color: #53665A;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .search {
+            display: flex;
+            gap: 10px;
+            max-width: 800px;
+        }
+
+        input, select, textarea {
+            font-size: 15px;
+        }
+
+        .search input, .search select {
+            padding: 14px;
+            border: 1px solid #DCDDD3;
+            border-radius: 9px;
+            background: #FFFFFF;
+            color: #28352E;
+        }
+
+        .search input {
+            flex: 1;
+            min-width: 0;
+        }
+
+        button {
+            border: none;
+            border-radius: 9px;
+            padding: 13px 19px;
+            background: #24483B;
+            color: #FFFFFF;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #19372D;
+            transform: translateY(-1px);
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .secondary {
+            background: #FFFFFF;
+            color: #24483B;
+            border: 1px solid #24483B;
+        }
+
+        .secondary:hover {
+            background: #DCE6DA;
+            color: #19372D;
+        }
+
+        .dashboard, .listings, .report-section {
+            width: 84%;
+            margin: 35px auto;
+        }
+
+        .section-title {
+            margin-bottom: 20px;
+        }
+
+        .section-title h2 {
+            margin-bottom: 7px;
+            color: #24483B;
+        }
+
+        .muted {
+            color: #727B73;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .stat-card {
+            background: #FFFFFF;
+            padding: 23px;
+            border-radius: 14px;
+            box-shadow: 0 3px 15px #19372D0A;
+            border: 1px solid #DCDDD3;
+        }
+
+        .stat-label {
+            color: #727B73;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .blue { color: #24483B; }
+        .orange { color: #94621F; }
+        .green { color: #365D4D; }
+        .purple { color: #536E59; }
+
+        .heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .heading h2 {
+            color: #24483B;
+        }
+
+        #listingCount {
+            color: #727B73;
+            font-size: 14px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            background: #FFFFFF;
+            padding: 23px;
+            border-radius: 14px;
+            border: 1px solid #DCDDD3;
+            box-shadow: 0 3px 15px #19372D0A;
+            overflow-wrap: anywhere;
+        }
+
+        .item-image {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            background: #F5F1E8;
+        }
+
+        .placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 140px;
+            margin-bottom: 16px;
+            background: #F5F1E8;
+            border-radius: 10px;
+            font-size: 45px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #F6E8CF;
+            color: #80551D;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 13px;
+        }
+
+        .found {
+            background: #DCE6DA;
+            color: #315B3B;
+        }
+
+        .returned {
+            background: #E5E7DF;
+            color: #53604F;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            font-size: 19px;
+            color: #28352E;
+        }
+
+        .card p {
+            color: #727B73;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-top: 8px;
+        }
+
+        .contact-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 14px;
+            background: #24483B;
+            color: #FFFFFF;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .contact-link:hover {
+            background: #19372D;
+        }
+
+        .return-button {
+            margin-top: 12px;
+            width: 100%;
+            background: #536E59;
+        }
+
+        .return-button:hover {
+            background: #365D4D;
+        }
+
+        .empty {
+            background: #FFFFFF;
+            padding: 30px;
+            border-radius: 12px;
+            color: #727B73;
+            grid-column: 1 / -1;
+            text-align: center;
+            border: 1px solid #DCDDD3;
+        }
+
+        .report-section {
+            background: #FFFFFF;
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid #DCDDD3;
+            box-shadow: 0 3px 15px #19372D0A;
+        }
+
+        .report-section h2 {
+            margin-bottom: 10px;
+            color: #24483B;
+        }
+
+        .intro {
+            color: #727B73;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        .field label {
+            font-weight: bold;
+            font-size: 14px;
+            color: #28352E;
+        }
+
+        .field input, .field select, .field textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #DCDDD3;
+            border-radius: 8px;
+            background: #FFFFFF;
+            color: #28352E;
+        }
+
+        .field input:focus, .field select:focus,
+        .field textarea:focus {
+            outline: 2px solid #DCE6DA;
+            border-color: #536E59;
+        }
+
+        .field textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .field input[type="file"] {
+            background: #F5F1E8;
+        }
+
+        .error {
+            color: #B42318;
+            font-size: 13px;
+        }
+
+        .notice {
+            padding: 13px 16px;
+            border-radius: 9px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .success-notice {
+            background: #DCE6DA;
+            color: #315B3B;
+        }
+
+        .error-notice {
+            background: #FCE8E6;
+            color: #B42318;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 23px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 28px;
+            background: #24483B;
+            color: #FFFFFF;
+            font-size: 13px;
+        }
+
+        @media (max-width: 1000px) {
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .cards {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 700px) {
+            nav {
+                padding: 20px 5%;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            nav div:last-child {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            nav a {
+                margin: 0;
+            }
+
+            .hero, .dashboard, .listings, .report-section {
+                width: 92%;
+            }
+
+            .hero {
+                padding: 27px;
+            }
+
+            .hero h1 {
+                font-size: 29px;
+            }
+
+            .search, .actions, .form-buttons {
+                flex-direction: column;
+            }
+
+            .stats, .cards, .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+
+            .report-section {
+                padding: 22px;
+            }
+
+            .heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">FindIt.</div>
+        <div>
+            <a href="#home">Home</a>
+            <a href="#dashboard">Dashboard</a>
+            <a href="#listings">Browse Items</a>
+            <a href="#report-form">Report Item</a>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <h1>Lost something? Find it here.</h1>
+        <p>
+            A simple community platform to report lost belongings,
+            share found items, and help them return to their owners.
+        </p>
+
+        <div class="search">
+            <input type="text" id="searchInput"
+                   placeholder="Search by item, description or location..."
+                   oninput="searchItems()">
+
+            <select id="statusFilter" onchange="searchItems()">
+                <option value="ALL">All Items</option>
+                <option value="LOST">Lost Items</option>
+                <option value="FOUND">Found Items</option>
+                <option value="RETURNED">Returned Items</option>
+            </select>
+
+            <button type="button" onclick="searchItems()">Search</button>
+        </div>
+
+        <div class="actions">
+            <button type="button" onclick="openReportForm('LOST')">
+                Report Lost Item
+            </button>
+
+            <button type="button" class="secondary"
+                    onclick="openReportForm('FOUND')">
+                Report Found Item
+            </button>
+        </div>
+    </section>
+
+    <section class="dashboard" id="dashboard">
+        <div class="section-title">
+            <h2>Dashboard</h2>
+            <p class="muted">An overview of the community's lost and found items.</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <p class="stat-label">Total Items</p>
+                <div class="stat-number blue"
+                     th:text="${totalCount}">0</div>
+            </div>
+
+            <div class="stat-card">
+                <p class="stat-label">Lost Items</p>
+                <div class="stat-number orange"
+                     th:text="${lostCount}">0</div>
+            </div>
+
+            <div class="stat-card">
+                <p class="stat-label">Found Items</p>
+                <div class="stat-number green"
+                     th:text="${foundCount}">0</div>
+            </div>
+
+            <div class="stat-card">
+                <p class="stat-label">Returned Items</p>
+                <div class="stat-number purple"
+                     th:text="${returnedCount}">0</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="listings" id="listings">
+        <div class="heading">
+            <div>
+                <h2>Recent Listings</h2>
+                <p class="muted">Browse items reported by the community.</p>
+            </div>
+
+            <span id="listingCount"
+                  th:text="${items == null ? 0 : #lists.size(items)} + ' items'">
+                0 items
+            </span>
+        </div>
+
+        <div class="cards" id="itemCards">
+
+            <div class="empty" th:if="${#lists.isEmpty(items)}">
+                <h3>No items reported yet</h3>
+                <p>Be the first to report a lost or found item!</p>
+            </div>
+
+            <div class="card" th:each="item : ${items}"
+                 th:attr="data-status=${item.status}">
+
+                <img class="item-image"
+                     th:if="${item.imageName != null and !item.imageName.isEmpty()}"
+                     th:src="@{'/uploads/' + ${item.imageName}}"
+                     th:alt="${item.name}">
+
+                <div class="placeholder"
+                     th:if="${item.imageName == null or item.imageName.isEmpty()}">
+                    <span>📦</span>
+                </div>
+
+                <span class="tag"
+                      th:classappend="${item.status == 'FOUND' ? ' found' : (item.status == 'RETURNED' ? ' returned' : '')}"
+                      th:text="${item.status}">
+                    LOST
+                </span>
+
+                <h3 th:text="${item.name}">Item Name</h3>
+
+                <p th:text="${item.description}">Item description</p>
+
+                <p>
+                    <strong>Location:</strong>
+                    <span th:text="${item.location}">Location</span>
+                </p>
+
+                <p>
+                    <strong>Date:</strong>
+                    <span th:text="${item.date}">Date</span>
+                </p>
+
+                <p>
+                    <strong>Contact:</strong>
+                    <span th:text="${item.contactNumber}">Contact</span>
+                </p>
+
+                <a class="contact-link"
+                   th:href="'tel:' + ${item.contactNumber}">
+                    Contact Owner
+                </a>
+
+                <form th:if="${item.status != 'RETURNED'}"
+                      th:action="@{/items/{id}/returned(id=${item.id})}"
+                      method="post"
+                      onsubmit="return confirm('Mark this item as returned?')">
+
+                    <button type="submit" class="return-button">
+                        Mark as Returned
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="report-section" id="report-form">
+        <h2>Report an Item</h2>
+        <p class="intro">
+            Share the details below to help reunite lost belongings
+            with their owners.
+        </p>
+
+        <div class="notice success-notice"
+             th:if="${successMessage != null}"
+             th:text="${successMessage}">
+        </div>
+
+        <div class="notice error-notice"
+             th:if="${errorMessage != null}"
+             th:text="${errorMessage}">
+        </div>
+
+        <form action="/report" method="post"
+              enctype="multipart/form-data"
+              th:object="${item}">
+
+            <div class="form-grid">
+
+                <div class="field">
+                    <label for="name">Item Name</label>
+                    <input type="text" id="name" th:field="*{name}"
+                           placeholder="e.g. Black wallet" required>
+                    <span class="error"
+                          th:if="${#fields.hasErrors('name')}"
+                          th:errors="*{name}"></span>
+                </div>
+
+                <div class="field">
+                    <label for="status">Item Status</label>
+                    <select id="status" th:field="*{status}" required>
+                        <option value="LOST">Lost</option>
+                        <option value="FOUND">Found</option>
+                    </select>
+                </div>
+
+                <div class="field full">
+                    <label for="description">Description</label>
+                    <textarea id="description" th:field="*{description}"
+                              placeholder="Describe the item and any identifying details..."
+                              required></textarea>
+                    <span class="error"
+                          th:if="${#fields.hasErrors('description')}"
+                          th:errors="*{description}"></span>
+                </div>
+
+                <div class="field">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" th:field="*{location}"
+                           placeholder="Where was it lost or found?" required>
+                    <span class="error"
+                          th:if="${#fields.hasErrors('location')}"
+                          th:errors="*{location}"></span>
+                </div>
+
+                <div class="field">
+                    <label for="contactNumber">Contact Number</label>
+                    <input type="tel" id="contactNumber"
+                           th:field="*{contactNumber}"
+                           pattern="[6-9][0-9]{9}"
+                           minlength="10" maxlength="10"
+                           placeholder="10-digit mobile number" required>
+                    <span class="error"
+                          th:if="${#fields.hasErrors('contactNumber')}"
+                          th:errors="*{contactNumber}"></span>
+                </div>
+
+                <div class="field">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" th:field="*{date}" required>
+                    <span class="error"
+                          th:if="${#fields.hasErrors('date')}"
+                          th:errors="*{date}"></span>
+                </div>
+
+                <div class="field">
+                    <label for="imageFile">Upload Item Image (Optional)</label>
+                    <input type="file" id="imageFile" name="imageFile"
+                           accept="image/jpeg,image/png,image/gif,image/webp">
+                </div>
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit">Submit Report</button>
+                <button type="reset" class="secondary">Clear Form</button>
+            </div>
+        </form>
+    </section>
+
+    <footer>
+        <p>FindIt — Helping lost belongings find their way home.</p>
+    </footer>
+
+    <script>
+        function openReportForm(status) {
+            document.getElementById("status").value = status;
+            document.getElementById("report-form").scrollIntoView({
+                behavior: "smooth"
+            });
+        }
+
+        function searchItems() {
+            const query = document.getElementById("searchInput")
+                .value.toLowerCase().trim();
+
+            const status = document.getElementById("statusFilter").value;
+            const cards = document.querySelectorAll("#itemCards .card");
+            let visibleCount = 0;
+
+            cards.forEach(function(card) {
+                const text = card.innerText.toLowerCase();
+                const cardStatus = card.dataset.status;
+                const matchesText = text.includes(query);
+                const matchesStatus =
+                    status === "ALL" || cardStatus === status;
+
+                const visible = matchesText && matchesStatus;
+                card.style.display = visible ? "" : "none";
+
+                if (visible) {
+                    visibleCount++;
+                }
+            });
+
+            document.getElementById("listingCount").textContent =
+                visibleCount + (visibleCount === 1 ? " item" : " items");
+        }
+    </script>
+
+</body>
+</html>
