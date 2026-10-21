@@ -1,18 +1,18 @@
-<img width="449" height="30" alt="image" src="https://github.com/user-attachments/assets/7524987c-ca1c-48c3-9db9-2c73a33ecd23" /># FindIt-Lost-Found-Website
+<img width="449" height="30" alt="image" src="https://github.com/user-attachments/assets/7524987c-ca1c-48c3-9db9-2c73a33ecd23" />FindIt-Lost-Found-Website
 1. Project Overview
 FindIt is a web-based Lost and Found application developed using Java and Spring Boot. It is intended to provide
 a simple interface for reporting and viewing information about lost and found items. Confirm that the described
 features match the current implementation before submission.
-2. Technologies
+3. Technologies
 Java; Spring Boot; Spring MVC; Thymeleaf; Spring Data JPA; Hibernate; Maven; HTML/CSS; and MySQL if
 configured in the project.
-3. Features
+4. Features
 • Dashboard for item information
 • Lost and found item reporting
 • Display of reported items
 • Form validation
 • Database integration
-4. Installation and Execution
+5. Installation and Execution
 Prerequisites: a compatible JDK, Maven or the Maven Wrapper, and the configured database software if
 required.
 1. Clone the repository and open the project folder.
