@@ -1,2 +1,2 @@
 # FindIt-Lost-Found-Website
-FindIt is a simple Lost &amp; Found website that helps people report lost belongings and find items reported by others. Users can upload item details and photos, search listings, contact the person who reported an item, and mark items as returned. The goal is to make finding lost belongings easier.
+FindIt is a simple Lost &amp; Found website that helps people report lost belongings and find items reported by others. Users can upload item details and photos, search listings, contact the person who reported an item, and mark items as returned. The goal is to make finding lost belongings easier. FindIt makes reconnecting people with their lost belongings simple, fast, and reliable.
