@@ -15,11 +15,11 @@ configured in the project.
 4. Installation and Execution:
 Prerequisites: a compatible JDK, Maven or the Maven Wrapper, and the configured database software if
 required.
-1. Clone the repository and open the project folder.
-2. Configure database settings in src/main/resources/application.properties.
-3. Open the project in an IDE or terminal.
-4. Run mvn spring-boot:run or run FinditApplication.java.
-5. When startup succeeds, open http://localhost:8080 in a browser.
+. Clone the repository and open the project folder.
+. Configure database settings in src/main/resources/application.properties.
+. Open the project in an IDE or terminal.
+. Run mvn spring-boot:run or run FinditApplication.java.
+. When startup succeeds, open http://localhost:8080 in a browser.
 5. Configuration Notes
 Do not commit real passwords, API keys, or other secrets to GitHub. The database name, dependencies, and
 required configuration must match the actual project.
